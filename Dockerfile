@@ -4,7 +4,7 @@ pipeline {
         stage('Example Build') {
             agent { docker 'centos:latest' } 
             steps {
-               sh 'docker -v'
+               
                 
             }
         }
