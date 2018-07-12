@@ -5,7 +5,7 @@ pipeline {
             agent { docker 'centos:latest' } 
             steps {
                
-                
+                echo 'Docker Build'
             }
         }
        
