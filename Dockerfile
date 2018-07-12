@@ -1,17 +1,16 @@
-def centos 
 pipeline {
-    agent { docker { image 'centos:latest' } } 
-    stages {
-        stage('Example Build') {
+    agent {
+        docker {
+            image 'centos:latest'
            
+        }
+    }
+    stages {
+        stage('Build') {
             steps {
-               script {
-                sh '/bin/bash'
-                centos = docker.image('centos:latest')
-                centos.build()
-                }
+                sh '\bin\bash'
+                sh 'docker -v'
             }
         }
-       
     }
 }
