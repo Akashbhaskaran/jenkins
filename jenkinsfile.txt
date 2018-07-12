@@ -32,6 +32,10 @@ pipeline {
          }
          }
          
+         docker {
+          image 'centos:7'
+        }
+         
          
             
         }
