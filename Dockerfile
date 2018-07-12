@@ -5,7 +5,8 @@ pipeline {
            
             steps {
                
-                def maven = docker.image('centos:latest')
+                def maven 
+                maven = docker.image('centos:latest')
                 maven.pull()
             }
         }
