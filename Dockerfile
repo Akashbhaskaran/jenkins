@@ -1,13 +1,15 @@
+def maven 
 pipeline {
     agent { docker { image 'centos:latest' } } 
     stages {
         stage('Example Build') {
            
             steps {
-               
-                def maven 
+               script {
+                
                 maven = docker.image('centos:latest')
                 maven.pull()
+                }
             }
         }
        
