@@ -5,7 +5,7 @@ pipeline {
            
             steps {
                
-                echo 'Docker Build'
+                sh 'docker -v'
             }
         }
        
