@@ -8,7 +8,7 @@ pipeline {
                script {
                 sh '/bin/bash'
                 centos = docker.image('centos:latest')
-                centos.pull()
+                centos.build()
                 }
             }
         }
