@@ -31,14 +31,16 @@ pipeline {
           archiveArtifacts "akash_scripts/*.sh"   
          }
          }
-         stage('Final stage'){
-            steps {
-                echo "RESULT: ${currentBuild.currentResult}"
-            } 
-         } 
+         
          
             
         }
+        post {
+       echo "RESULT: ${currentBuild.currentResult}"
+    }
+        
+        
+        
         }
         
             
