@@ -1,8 +1,7 @@
 pipeline {
     agent {
         docker { image 'node:7-alpine' }
-    }
-    
+     
 
     stages {
     stage('Test') {
@@ -48,7 +47,7 @@ pipeline {
        echo "RESULT: ${currentBuild.currentResult}"
     }
     }
-        
+        }
         
         
         }
