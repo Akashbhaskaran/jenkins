@@ -1,8 +1,8 @@
 pipeline {
-    agent none 
+    agent { docker 'centos:latest' } 
     stages {
         stage('Example Build') {
-            agent { docker 'centos:latest' } 
+           
             steps {
                
                 echo 'Docker Build'
