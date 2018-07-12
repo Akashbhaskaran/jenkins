@@ -32,9 +32,9 @@ pipeline {
          }
          }
          stage('Installing Docker'){
-         agent {
+         steps {
          docker {
-          image 'jess/zsh'
+          image 'maven:3.5.0'
         }
          }
          }
