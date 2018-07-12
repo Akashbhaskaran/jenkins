@@ -1,7 +1,16 @@
 pipeline {
-    agent any
+    agent {
+        docker { image 'node:7-alpine' }
+    }
+    
 
     stages {
+    stage('Test') {
+            steps {
+                sh 'node --version'
+            }
+        }
+        
         stage('Checkout ') {
             steps {
                 checkout([$class: 'GitSCM',
@@ -31,14 +40,7 @@ pipeline {
           archiveArtifacts "akash_scripts/*.sh"   
          }
          }
-         stage('Installing Docker'){
-         steps {
-         docker {
-          image 'maven:3.5.0'
-        }
-         }
-         }
-         
+                 
             
         }
         post {
