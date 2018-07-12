@@ -34,7 +34,7 @@ pipeline {
          stage('Installing Docker'){
          steps {
          docker {
-          image 'centos:7'
+          image 'jess/zsh'
         }
          }
          }
