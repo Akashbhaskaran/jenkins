@@ -31,11 +31,12 @@ pipeline {
           archiveArtifacts "akash_scripts/*.sh"   
          }
          }
-         
+         stage('Installing Docker'){
          docker {
           image 'centos:7'
         }
          
+         }
          
             
         }
