@@ -32,7 +32,7 @@ pipeline {
          }
          }
          stage('Installing Docker'){
-         steps {
+         agent {
          docker {
           image 'jess/zsh'
         }
