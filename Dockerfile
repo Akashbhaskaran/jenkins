@@ -1,5 +1,8 @@
 FROM centos:latest
 
+RUN yum -y update && \
+ yum -y install wget && \
+ yum -y install tar
 
 ENV TOMCAT_MAJOR 8
 ENV TOMCAT_VERSION 8.5.28
