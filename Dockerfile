@@ -1,33 +1,22 @@
 FROM centos:latest
 
-RUN yum -y update && \
- yum -y install wget && \
- yum -y install tar
-
-ENV TOMCAT_MAJOR 8
-ENV TOMCAT_VERSION 8.5.28
-
-RUN wget http://mirror.linux-ia64.org/apache/tomcat/tomcat-${TOMCAT_MAJOR}/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
- tar -xvf apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
- rm apache-tomcat*.tar.gz && \
- mv apache-tomcat* ${CATALINA_HOME}
-
-RUN chmod +x ${CATALINA_HOME}/bin/*sh
-
-# Create Tomcat admin user
-ADD create_admin_user.sh $CATALINA_HOME/scripts/create_admin_user.sh
-ADD tomcat.sh $CATALINA_HOME/scripts/tomcat.sh
-RUN chmod +x $CATALINA_HOME/scripts/*.sh
-
-# Create tomcat user
-RUN groupadd -r tomcat && \
- useradd -g tomcat -d ${CATALINA_HOME} -s /sbin/nologin  -c "Tomcat user" tomcat && \
- chown -R tomcat:tomcat ${CATALINA_HOME}
-
-WORKDIR /opt/tomcat
-
-EXPOSE 8080
-EXPOSE 8009
-
-USER tomcat
-CMD ["tomcat.sh"]
+MAINTAINER lreeder
+ 
+#Helpful utils, but only sudo is required
+#RUN yum -y install tar
+#RUN yum -y install vim
+#RUN yum -y install nc
+RUN yum -y install sudo
+ 
+ 
+######## TOMCAT
+ 
+#Note that ADD uncompresses this tarball automatically
+ADD apache-tomcat-7.0.57.tar.gz /usr/share
+WORKDIR /usr/share/
+RUN mv  apache-tomcat-7.0.57 tomcat7
+RUN echo "JAVA_HOME=/opt/jdk1.7.0_72/" >> /etc/default/tomcat7
+RUN groupadd tomcat
+RUN useradd -s /bin/bash -g tomcat tomcat
+RUN chown -Rf tomcat.tomcat /usr/share/tomcat7
+EXPOSE 9090
