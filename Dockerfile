@@ -1,30 +1,24 @@
 FROM centos:centos6
 
-#Install WGET
-RUN yum install -y wget
+ENV CATALINA_HOME /usr/local/tomcat
+ENV PATH $CATALINA_HOME/bin:$PATH
 
-#Install tar
-RUN yum install -y tar
+RUN mkdir -p "$CATALINA_HOME"
+RUN chown -R 777 "$CATALINA_HOME"
+WORKDIR $CATALINA_HOME
 
-# Download JDK
-RUN cd /opt;wget https://s3.amazonaws.com//jdk-7u67-linux-x64.tar.gz
+ENV TOMCAT_MAJOR 8
+ENV TOMCAT_VERSION 8.5.32
+ENV TOMCAT_TGZ_URL https://www.apache.org/dist/tomcat/tomcat-$TOMCAT_MAJOR/v$TOMCAT_VERSION/bin/apache-tomcat-$TOMCAT_VERSION.tar.gz
 
-#gunzip JDK
-RUN cd /opt;gunzip jdk-7u67-linux-x64.tar.gz
-RUN cd /opt;tar xvf jdk-7u67-linux-x64.tar
-RUN alternatives –install /usr/bin/java java /opt/jdk1.7.0_67/bin/java 2
+RUN set -x \
+    && curl -fSL "$TOMCAT_TGZ_URL" -o tomcat.tar.gz \
+    && curl -fSL "$TOMCAT_TGZ_URL.asc" -o tomcat.tar.gz.asc \
+    && gpg --verify tomcat.tar.gz.asc \
+    && tar -xvf tomcat.tar.gz --strip-components=1 \
+    && rm bin/*.bat \
+    && rm tomcat.tar.gz*
 
-# Download Apache Tomcat 7
-RUN cd /tmp;wget https://s3.amazonaws.com//apache-tomcat-7.0.55.tar.gz
-
-# untar and move to proper location
-RUN cd /tmp;gunzip apache-tomcat-7.0.55.tar.gz
-RUN cd /tmp;tar xvf apache-tomcat-7.0.55.tar
-RUN cd /tmp;mv apache-tomcat-7.0.55 /opt/tomcat7
-RUN chmod -R 755 /opt/tomcat7
-
-ENV JAVA_HOME /opt/jdk1.7.0_67
 
 EXPOSE 9090
-
-CMD /opt/tomcat7/bin/catalina.sh run
+CMD ["catalina.sh", "run"]
