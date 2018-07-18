@@ -1,22 +1,30 @@
-FROM centos:latest
+FROM centos:centos6
 
-MAINTAINER lreeder
- 
-#Helpful utils, but only sudo is required
-#RUN yum -y install tar
-#RUN yum -y install vim
-#RUN yum -y install nc
-RUN yum -y install sudo
- 
- 
-######## TOMCAT
- 
-#Note that ADD uncompresses this tarball automatically
-ADD apache-tomcat-7.0.57.tar.gz /usr/share
-WORKDIR /usr/share/
-RUN mv  apache-tomcat-7.0.57 tomcat7
-RUN echo "JAVA_HOME=/opt/jdk1.7.0_72/" >> /etc/default/tomcat7
-RUN groupadd tomcat
-RUN useradd -s /bin/bash -g tomcat tomcat
-RUN chown -Rf tomcat.tomcat /usr/share/tomcat7
+#Install WGET
+RUN yum install -y wget
+
+#Install tar
+RUN yum install -y tar
+
+# Download JDK
+RUN cd /opt;wget https://s3.amazonaws.com//jdk-7u67-linux-x64.tar.gz
+
+#gunzip JDK
+RUN cd /opt;gunzip jdk-7u67-linux-x64.tar.gz
+RUN cd /opt;tar xvf jdk-7u67-linux-x64.tar
+RUN alternatives –install /usr/bin/java java /opt/jdk1.7.0_67/bin/java 2
+
+# Download Apache Tomcat 7
+RUN cd /tmp;wget https://s3.amazonaws.com//apache-tomcat-7.0.55.tar.gz
+
+# untar and move to proper location
+RUN cd /tmp;gunzip apache-tomcat-7.0.55.tar.gz
+RUN cd /tmp;tar xvf apache-tomcat-7.0.55.tar
+RUN cd /tmp;mv apache-tomcat-7.0.55 /opt/tomcat7
+RUN chmod -R 755 /opt/tomcat7
+
+ENV JAVA_HOME /opt/jdk1.7.0_67
+
 EXPOSE 9090
+
+CMD /opt/tomcat7/bin/catalina.sh run
